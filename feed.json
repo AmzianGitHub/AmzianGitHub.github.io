@@ -2,24 +2,26 @@
     "version": "https://jsonfeed.org/version/1",
     "title": "Amzian",
     "description": "",
-    "home_page_url": "https://AmzianGitHub.github.io",
-    "feed_url": "https://AmzianGitHub.github.io/feed.json",
+    "home_page_url": "https://amzian.com",
+    "feed_url": "https://amzian.com/feed.json",
     "user_comment": "",
     "author": {
         "name": "Amzian"
     },
     "items": [
         {
-            "id": "https://AmzianGitHub.github.io/okk.html",
-            "url": "https://AmzianGitHub.github.io/okk.html",
-            "title": "okk",
+            "id": "https://amzian.com/okk.html",
+            "url": "https://amzian.com/okk.html",
+            "title": "12345",
+            "summary": "GitHub Pages 文档",
+            "content_html": "<h1 id=\"title-h1\"><a href=\"https://docs.github.com/zh/pages\" title=\"GitHub Pages 文档\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub Pages 文档</a></h1>",
             "author": {
                 "name": "Amzian"
             },
             "tags": [
             ],
             "date_published": "2025-03-14T11:35:26+08:00",
-            "date_modified": "2025-03-14T11:35:26+08:00"
+            "date_modified": "2025-03-14T15:33:49+08:00"
         }
     ]
 }
