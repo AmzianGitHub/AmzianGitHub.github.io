@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的网站管理后台</title>
+    <title>网站管理后台 - 我的个人博客</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
@@ -14,6 +14,8 @@
                         primary: '#165DFF',
                         secondary: '#36D399',
                         accent: '#F87272',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -24,214 +26,619 @@
     </script>
 </head>
 <body class="bg-gray-50 font-sans">
-    <!-- 顶部导航 -->
-    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <i class="fa fa-dashboard text-primary text-2xl mr-3"></i>
-                    <span class="text-xl font-bold text-gray-900">我的网站管理后台</span>
+    <!-- 登录页面 -->
+    <div id="loginPage" class="fixed inset-0 bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-8">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa fa-dashboard text-primary text-2xl"></i>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-gray-700">欢迎，AmzianGitHub</span>
-                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-                        <i class="fa fa-sign-out mr-2"></i>退出
-                    </button>
+                <h2 class="text-2xl font-bold text-gray-900">网站管理后台</h2>
+                <p class="text-gray-600 mt-2">请使用您的账号登录</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">用户名</label>
+                    <input type="text" id="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors" placeholder="请输入用户名" value="admin">
                 </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- 侧边栏 -->
-    <div class="fixed top-16 left-0 w-64 h-full bg-white shadow-lg overflow-y-auto">
-        <div class="p-4">
-            <div class="space-y-1">
-                <a href="#dashboard" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100 transition-colors sidebar-active">
-                    <i class="fa fa-dashboard w-6 text-center mr-3"></i>
-                    <span>仪表盘</span>
-                </a>
-                <a href="#articles" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100 transition-colors">
-                    <i class="fa fa-file-text w-6 text-center mr-3"></i>
-                    <span>文章管理</span>
-                </a>
-                <a href="#media" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100 transition-colors">
-                    <i class="fa fa-image w-6 text-center mr-3"></i>
-                    <span>媒体管理</span>
-                </a>
-                <a href="#settings" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100 transition-colors">
-                    <i class="fa fa-cog w-6 text-center mr-3"></i>
-                    <span>网站设置</span>
-                </a>
-            </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">密码</label>
+                    <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors" placeholder="请输入密码" value="123456">
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="rememberMe" class="w-4 h-4 text-primary focus:ring-primary/50 border-gray-300 rounded">
+                        <label for="rememberMe" class="ml-2 block text-sm text-gray-700">记住我</label>
+                    </div>
+                    <a href="#" class="text-sm text-primary hover:text-primary/80 transition-colors">忘记密码？</a>
+                </div>
+                <button type="submit" class="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                    <i class="fa fa-sign-in mr-2"></i>登录
+                </button>
+            </form>
         </div>
     </div>
 
-    <!-- 主内容区 -->
-    <div class="ml-64 pt-20 p-6">
-        <!-- 仪表盘 -->
-        <div id="dashboard" class="content-section">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="bg-white rounded-lg shadow-md p-6">
+    <!-- 主界面 -->
+    <div id="mainApp" class="hidden">
+        <!-- 顶部导航 -->
+        <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
                     <div class="flex items-center">
-                        <div class="bg-primary/10 p-3 rounded-full">
-                            <i class="fa fa-file-text text-primary text-xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-600">文章总数</p>
-                            <p class="text-2xl font-bold text-gray-900" id="articleCount">0</p>
+                        <button id="sidebarToggle" class="md:hidden p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <div class="flex items-center ml-4">
+                            <i class="fa fa-dashboard text-primary text-2xl mr-3"></i>
+                            <span class="text-xl font-bold text-gray-900">网站管理后台</span>
                         </div>
                     </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <div class="flex items-center">
-                        <div class="bg-secondary/10 p-3 rounded-full">
-                            <i class="fa fa-image text-secondary text-xl"></i>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100">
+                                <i class="fa fa-bell"></i>
+                                <span class="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full"></span>
+                            </button>
                         </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-600">媒体文件</p>
-                            <p class="text-2xl font-bold text-gray-900" id="mediaCount">0</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <div class="flex items-center">
-                        <div class="bg-accent/10 p-3 rounded-full">
-                            <i class="fa fa-eye text-accent text-xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-600">总访问量</p>
-                            <p class="text-2xl font-bold text-gray-900">1,234</p>
+                        <div class="flex items-center space-x-2">
+                            <img src="https://picsum.photos/id/1005/40/40" alt="用户头像" class="w-8 h-8 rounded-full">
+                            <span class="text-gray-700 font-medium">管理员</span>
+                            <button class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100">
+                                <i class="fa fa-cog"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </nav>
 
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">最近文章</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标题</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">发布日期</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200" id="recentArticles">
-                            <!-- 文章列表会在这里动态显示 -->
-                        </tbody>
-                    </table>
+        <!-- 侧边栏 -->
+        <div id="sidebar" class="fixed top-16 left-0 w-64 h-full bg-white shadow-lg overflow-y-auto transition-all duration-300 z-30">
+            <div class="p-4">
+                <div class="space-y-1">
+                    <a href="#dashboard" class="nav-link flex items-center px-3 py-3 text-gray-700 rounded-md hover:bg-primary/5 hover:text-primary transition-colors active">
+                        <i class="fa fa-dashboard w-6 text-center mr-3"></i>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="#articles" class="nav-link flex items-center px-3 py-3 text-gray-700 rounded-md hover:bg-primary/5 hover:text-primary transition-colors">
+                        <i class="fa fa-file-text w-6 text-center mr-3"></i>
+                        <span>文章管理</span>
+                    </a>
+                    <a href="#media" class="nav-link flex items-center px-3 py-3 text-gray-700 rounded-md hover:bg-primary/5 hover:text-primary transition-colors">
+                        <i class="fa fa-image w-6 text-center mr-3"></i>
+                        <span>媒体管理</span>
+                    </a>
+                    <a href="#pages" class="nav-link flex items-center px-3 py-3 text-gray-700 rounded-md hover:bg-primary/5 hover:text-primary transition-colors">
+                        <i class="fa fa-file-o w-6 text-center mr-3"></i>
+                        <span>页面管理</span>
+                    </a>
+                    <a href="#settings" class="nav-link flex items-center px-3 py-3 text-gray-700 rounded-md hover:bg-primary/5 hover:text-primary transition-colors">
+                        <i class="fa fa-cog w-6 text-center mr-3"></i>
+                        <span>网站设置</span>
+                    </a>
+                    <a href="#users" class="nav-link flex items-center px-3 py-3 text-gray-700 rounded-md hover:bg-primary/5 hover:text-primary transition-colors">
+                        <i class="fa fa-users w-6 text-center mr-3"></i>
+                        <span>用户管理</span>
+                    </a>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2">系统</h3>
+                    <div class="space-y-1">
+                        <a href="#backup" class="nav-link flex items-center px-3 py-3 text-gray-700 rounded-md hover:bg-primary/5 hover:text-primary transition-colors">
+                            <i class="fa fa-database w-6 text-center mr-3"></i>
+                            <span>数据备份</span>
+                        </a>
+                        <a href="#logs" class="nav-link flex items-center px-3 py-3 text-gray-700 rounded-md hover:bg-primary/5 hover:text-primary transition-colors">
+                            <i class="fa fa-list-alt w-6 text-center mr-3"></i>
+                            <span>系统日志</span>
+                        </a>
+                        <button id="logoutBtn" class="nav-link w-full text-left flex items-center px-3 py-3 text-gray-700 rounded-md hover:bg-red-50 hover:text-red-600 transition-colors">
+                            <i class="fa fa-sign-out w-6 text-center mr-3"></i>
+                            <span>退出登录</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 文章管理 -->
-        <div id="articles" class="content-section hidden">
-            <div class="bg-white rounded-lg shadow-md p-6">
+        <!-- 主内容区 -->
+        <div id="content" class="ml-64 pt-20 p-6 transition-all duration-300">
+            <!-- 仪表盘 -->
+            <div id="dashboard" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">仪表盘</h1>
+                    <p class="text-gray-600 mt-1">欢迎回来，这里是您的网站数据概览</p>
+                </div>
+
+                <!-- 统计卡片 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">文章总数</p>
+                                <p class="text-3xl font-bold text-gray-900" id="totalArticles">0</p>
+                            </div>
+                            <div class="bg-primary/10 p-3 rounded-full">
+                                <i class="fa fa-file-text text-primary text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center">
+                            <span class="text-sm text-green-600 flex items-center">
+                                <i class="fa fa-arrow-up mr-1"></i>
+                                12%
+                            </span>
+                            <span class="text-sm text-gray-500 ml-2">较上月</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">媒体文件</p>
+                                <p class="text-3xl font-bold text-gray-900" id="totalMedia">0</p>
+                            </div>
+                            <div class="bg-secondary/10 p-3 rounded-full">
+                                <i class="fa fa-image text-secondary text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center">
+                            <span class="text-sm text-green-600 flex items-center">
+                                <i class="fa fa-arrow-up mr-1"></i>
+                                8%
+                            </span>
+                            <span class="text-sm text-gray-500 ml-2">较上月</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">总访问量</p>
+                                <p class="text-3xl font-bold text-gray-900">1,234</p>
+                            </div>
+                            <div class="bg-accent/10 p-3 rounded-full">
+                                <i class="fa fa-eye text-accent text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center">
+                            <span class="text-sm text-green-600 flex items-center">
+                                <i class="fa fa-arrow-up mr-1"></i>
+                                15%
+                            </span>
+                            <span class="text-sm text-gray-500 ml-2">较上月</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 最近文章 -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">最近文章</h3>
+                        <a href="#articles" class="text-primary hover:text-primary/80 transition-colors">查看全部</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标题</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">发布日期</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="recentArticlesTable">
+                                <!-- 动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 访问统计图表 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">最近7天访问统计</h3>
+                    <div class="h-64 flex items-center justify-center border border-gray-200 rounded-lg">
+                        <div class="text-center text-gray-500">
+                            <i class="fa fa-bar-chart text-4xl mb-3"></i>
+                            <p>访问统计图表</p>
+                            <p class="text-sm mt-1">显示最近7天的网站访问数据</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文章管理 -->
+            <div id="articles" class="content-section hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">文章管理</h1>
+                    <p class="text-gray-600 mt-1">管理您的博客文章</p>
+                </div>
+
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900">文章管理</h3>
-                    <button onclick="showAddArticleModal()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <input type="text" placeholder="搜索文章..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                            <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                            <option>所有分类</option>
+                            <option>技术文章</option>
+                            <option>生活随笔</option>
+                            <option>旅行日记</option>
+                        </select>
+                    </div>
+                    <button id="addArticleBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center">
                         <i class="fa fa-plus mr-2"></i>新建文章
                     </button>
                 </div>
-                
+
                 <!-- 文章列表 -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标题</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">分类</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">发布日期</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200" id="articleList">
-                            <!-- 文章列表会在这里动态显示 -->
-                        </tbody>
-                    </table>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标题</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">分类</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">发布日期</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="articlesTable">
+                                <!-- 动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 分页 -->
+                <div class="mt-6 flex justify-between items-center">
+                    <div class="text-sm text-gray-500">
+                        显示 1-10 条，共 <span id="articlesCount">0</span> 条
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 transition-colors">上一页</button>
+                        <button class="px-3 py-1 bg-primary text-white rounded">1</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 transition-colors">2</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 transition-colors">3</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 transition-colors">下一页</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 媒体管理 -->
-        <div id="media" class="content-section hidden">
-            <div class="bg-white rounded-lg shadow-md p-6">
+            <!-- 媒体管理 -->
+            <div id="media" class="content-section hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">媒体管理</h1>
+                    <p class="text-gray-600 mt-1">管理您的图片和媒体文件</p>
+                </div>
+
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900">媒体管理</h3>
-                    <button onclick="showUploadModal()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                    <div class="relative">
+                        <input type="text" placeholder="搜索媒体文件..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                        <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                    <button id="uploadMediaBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center">
                         <i class="fa fa-upload mr-2"></i>上传图片
                     </button>
                 </div>
-                
+
                 <!-- 媒体文件列表 -->
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4" id="mediaList">
-                    <!-- 媒体文件列表会在这里动态显示 -->
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4" id="mediaGrid">
+                    <!-- 动态生成 -->
                 </div>
             </div>
-        </div>
 
-        <!-- 网站设置 -->
-        <div id="settings" class="content-section hidden">
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-6">网站设置</h3>
-                
-                <form class="space-y-6" id="settingsForm">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">网站标题</label>
-                            <input type="text" id="siteTitle" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">网站域名</label>
-                            <input type="text" id="siteDomain" value="amzian.com" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+            <!-- 页面管理 -->
+            <div id="pages" class="content-section hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">页面管理</h1>
+                    <p class="text-gray-600 mt-1">管理您的网站页面</p>
+                </div>
+
+                <div class="flex justify-between items-center mb-6">
+                    <div class="relative">
+                        <input type="text" placeholder="搜索页面..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                        <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center">
+                        <i class="fa fa-plus mr-2"></i>新建页面
+                    </button>
+                </div>
+
+                <!-- 页面列表 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">页面标题</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">URL</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">更新日期</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">关于我</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">/about</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-12-15</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已发布</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-primary hover:text-primary/80 mr-3">编辑</button>
+                                        <button class="text-accent hover:text-accent/80">删除</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">联系我们</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">/contact</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-12-10</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已发布</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-primary hover:text-primary/80 mr-3">编辑</button>
+                                        <button class="text-accent hover:text-accent/80">删除</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 网站设置 -->
+            <div id="settings" class="content-section hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">网站设置</h1>
+                    <p class="text-gray-600 mt-1">配置您的网站基本信息</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">基本设置</h3>
+                            <form id="settingsForm" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">网站标题</label>
+                                        <input type="text" id="siteTitle" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" value="我的个人博客">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">网站域名</label>
+                                        <input type="text" id="siteDomain" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" value="amzian.com">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">网站描述</label>
+                                    <textarea rows="3" id="siteDescription" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">这是我的个人博客，分享技术文章和生活感悟</textarea>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">网站语言</label>
+                                        <select id="siteLanguage" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                            <option value="zh-CN">中文 (中国大陆)</option>
+                                            <option value="zh-TW">中文 (台湾)</option>
+                                            <option value="en-US">English (US)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">时区</label>
+                                        <select id="siteTimezone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                            <option value="Asia/Shanghai">Asia/Shanghai (北京时间)</option>
+                                            <option value="America/New_York">America/New_York (纽约时间)</option>
+                                            <option value="Europe/London">Europe/London (伦敦时间)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-end">
+                                    <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors">
+                                        <i class="fa fa-save mr-2"></i>保存设置
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">网站描述</label>
-                        <textarea rows="3" id="siteDescription" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"></textarea>
+                        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">网站logo</h3>
+                            <div class="text-center">
+                                <div class="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                    <i class="fa fa-image text-4xl text-gray-400"></i>
+                                </div>
+                                <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                                    <i class="fa fa-upload mr-2"></i>上传logo
+                                </button>
+                                <p class="text-sm text-gray-500 mt-2">建议尺寸：200x200px</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">主题设置</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">主题颜色</label>
+                                    <div class="flex space-x-2">
+                                        <button class="w-8 h-8 bg-primary rounded-full border-2 border-gray-300 ring-2 ring-primary"></button>
+                                        <button class="w-8 h-8 bg-red-500 rounded-full border-2 border-gray-300 hover:ring-2 hover:ring-red-500 transition-colors"></button>
+                                        <button class="w-8 h-8 bg-green-500 rounded-full border-2 border-gray-300 hover:ring-2 hover:ring-green-500 transition-colors"></button>
+                                        <button class="w-8 h-8 bg-purple-500 rounded-full border-2 border-gray-300 hover:ring-2 hover:ring-purple-500 transition-colors"></button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">页面布局</label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                        <option>经典布局</option>
+                                        <option>现代布局</option>
+                                        <option>极简布局</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="flex justify-end">
-                        <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-                            <i class="fa fa-save mr-2"></i>保存设置
-                        </button>
+                </div>
+            </div>
+
+            <!-- 用户管理 -->
+            <div id="users" class="content-section hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">用户管理</h1>
+                    <p class="text-gray-600 mt-1">管理网站用户和权限</p>
+                </div>
+
+                <div class="flex justify-between items-center mb-6">
+                    <div class="relative">
+                        <input type="text" placeholder="搜索用户..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                        <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
                     </div>
-                </form>
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center">
+                        <i class="fa fa-plus mr-2"></i>添加用户
+                    </button>
+                </div>
+
+                <!-- 用户列表 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">用户信息</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">邮箱</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">角色</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">注册时间</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="https://picsum.photos/id/1005/40/40" alt="用户头像" class="w-10 h-10 rounded-full mr-3">
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">管理员</div>
+                                                <div class="text-sm text-gray-500">admin</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">admin@example.com</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary/10 text-primary">管理员</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-12-01</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">活跃</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-primary hover:text-primary/80 mr-3">编辑</button>
+                                        <button class="text-gray-400 cursor-not-allowed">删除</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="https://picsum.photos/id/1012/40/40" alt="用户头像" class="w-10 h-10 rounded-full mr-3">
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">作者</div>
+                                                <div class="text-sm text-gray-500">author</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">author@example.com</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green/10 text-green-600">作者</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-12-05</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">活跃</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-primary hover:text-primary/80 mr-3">编辑</button>
+                                        <button class="text-accent hover:text-accent/80">删除</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- 新建文章模态框 -->
-    <div id="addArticleModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div id="articleModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div class="p-6 border-b">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-900">新建文章</h3>
-                    <button onclick="closeAddArticleModal()" class="text-gray-400 hover:text-gray-600">
+                    <h3 class="text-lg font-semibold text-gray-900" id="modalTitle">新建文章</h3>
+                    <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600">
                         <i class="fa fa-times text-xl"></i>
                     </button>
                 </div>
             </div>
             <div class="p-6">
-                <form id="addArticleForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">文章标题</label>
-                        <input type="text" id="articleTitle" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                <form id="articleForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">文章标题</label>
+                            <input type="text" id="articleTitle" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="请输入文章标题">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">文章分类</label>
+                            <select id="articleCategory" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                <option value="">请选择分类</option>
+                                <option value="技术文章">技术文章</option>
+                                <option value="生活随笔">生活随笔</option>
+                                <option value="旅行日记">旅行日记</option>
+                            </select>
+                        </div>
                     </div>
+                    
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">文章分类</label>
-                        <input type="text" id="articleCategory" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">文章标签</label>
+                        <input type="text" id="articleTags" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="请输入标签，用逗号分隔">
                     </div>
+                    
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">文章内容</label>
-                        <textarea rows="8" id="articleContent" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"></textarea>
+                        <div class="border border-gray-300 rounded-lg">
+                            <div class="border-b border-gray-300 px-4 py-2 flex items-center space-x-4 bg-gray-50">
+                                <button class="text-gray-600 hover:text-primary transition-colors">
+                                    <i class="fa fa-bold"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-primary transition-colors">
+                                    <i class="fa fa-italic"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-primary transition-colors">
+                                    <i class="fa fa-link"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-primary transition-colors">
+                                    <i class="fa fa-image"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-primary transition-colors">
+                                    <i class="fa fa-list-ul"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-primary transition-colors">
+                                    <i class="fa fa-list-ol"></i>
+                                </button>
+                            </div>
+                            <textarea rows="10" id="articleContent" class="w-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="请输入文章内容"></textarea>
+                        </div>
                     </div>
+                    
                     <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="closeAddArticleModal()" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">取消</button>
+                        <button type="button" id="cancelArticleBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">取消</button>
+                        <button type="button" id="saveDraftBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">保存草稿</button>
                         <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">发布文章</button>
                     </div>
                 </form>
@@ -245,7 +652,7 @@
             <div class="p-6 border-b">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-semibold text-gray-900">上传图片</h3>
-                    <button onclick="closeUploadModal()" class="text-gray-400 hover:text-gray-600">
+                    <button id="closeUploadBtn" class="text-gray-400 hover:text-gray-600">
                         <i class="fa fa-times text-xl"></i>
                     </button>
                 </div>
@@ -254,87 +661,199 @@
                 <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer" id="uploadArea">
                     <i class="fa fa-cloud-upload text-4xl text-gray-400 mb-3"></i>
                     <p class="text-gray-600">点击或拖拽图片到这里上传</p>
+                    <p class="text-sm text-gray-500 mt-1">支持 JPG、PNG、GIF 格式，最大 10MB</p>
                     <input type="file" id="fileInput" accept="image/*" class="hidden">
                 </div>
                 <div class="flex justify-end space-x-3 mt-6">
-                    <button type="button" onclick="closeUploadModal()" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">取消</button>
-                    <button type="button" onclick="uploadImage()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">上传图片</button>
+                    <button type="button" id="cancelUploadBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">取消</button>
+                    <button type="button" id="confirmUploadBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">上传图片</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // 数据存储
-        let articles = JSON.parse(localStorage.getItem('articles') || '[]');
-        let media = JSON.parse(localStorage.getItem('media') || '[]');
-        let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+    <!-- 通知提示 -->
+    <div id="notification" class="fixed top-4 right-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-4 max-w-sm">
+            <div class="flex items-center">
+                <div id="notificationIcon" class="w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <i class="fa fa-check text-white"></i>
+                </div>
+                <div>
+                    <p id="notificationTitle" class="font-medium text-gray-900">操作成功</p>
+                    <p id="notificationMessage" class="text-sm text-gray-600 mt-1">您的操作已成功完成</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
-        // 初始化页面
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
+<script>
+    // 数据存储
+    let articles = JSON.parse(localStorage.getItem('articles') || '[]');
+    let media = JSON.parse(localStorage.getItem('media') || '[]');
+    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+
+    // 初始化页面
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeApp();
+    });
+
+    function initializeApp() {
+        // 登录功能
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 简单的登录验证
+            if (username && password) {
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                showNotification('登录成功', 'success');
+            } else {
+                showNotification('请输入用户名和密码', 'error');
+            }
         });
 
-        function initializeApp() {
-            // 侧边栏导航切换
-            document.querySelectorAll('.sidebar a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // 移除所有active类
-                    document.querySelectorAll('.sidebar a').forEach(l => {
-                        l.classList.remove('sidebar-active');
-                    });
-                    
-                    // 添加active类到当前点击的链接
-                    this.classList.add('sidebar-active');
-                    
-                    // 隐藏所有内容区域
-                    document.querySelectorAll('.content-section').forEach(section => {
-                        section.classList.add('hidden');
-                    });
-                    
-                    // 显示对应的内容区域
-                    const target = this.getAttribute('href');
-                    document.querySelector(target).classList.remove('hidden');
-                    
-                    // 更新数据显示
-                    if (target === '#dashboard') {
-                        updateDashboard();
-                    } else if (target === '#articles') {
-                        updateArticleList();
-                    } else if (target === '#media') {
-                        updateMediaList();
-                    } else if (target === '#settings') {
-                        loadSettings();
-                    }
-                });
-            });
-
-            // 设置表单提交
-            document.getElementById('settingsForm').addEventListener('submit', function(e) {
+        // 侧边栏导航
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
                 e.preventDefault();
-                saveSettings();
+                
+                // 移除所有active类
+                document.querySelectorAll('.nav-link').forEach(l => {
+                    l.classList.remove('active', 'bg-primary/5', 'text-primary');
+                });
+                
+                // 添加active类
+                this.classList.add('active', 'bg-primary/5', 'text-primary');
+                
+                // 获取目标页面
+                const target = this.getAttribute('href');
+                
+                // 隐藏所有内容区域
+                const sections = document.querySelectorAll('.content-section');
+                sections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+                
+                // 显示目标内容区域
+                document.querySelector(target).classList.remove('hidden');
+                
+                // 更新页面内容
+                if (target === '#dashboard') {
+                    updateDashboard();
+                } else if (target === '#articles') {
+                    updateArticleList();
+                } else if (target === '#media') {
+                    updateMediaList();
+                } else if (target === '#settings') {
+                    loadSettings();
+                }
             });
+        });
 
-            // 新建文章表单提交
-            document.getElementById('addArticleForm').addEventListener('submit', function(e) {
+        // 侧边栏切换（移动端）
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+        
+        sidebarToggle.addEventListener('click', function() {
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                content.classList.remove('ml-0');
+                content.classList.add('ml-64');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                content.classList.remove('ml-64');
+                content.classList.add('ml-0');
+            }
+        });
+
+        // 新建文章按钮
+        const addArticleBtn = document.getElementById('addArticleBtn');
+        if (addArticleBtn) {
+            addArticleBtn.addEventListener('click', function() {
+                document.getElementById('articleModal').classList.remove('hidden');
+                document.getElementById('modalTitle').textContent = '新建文章';
+                resetArticleForm();
+            });
+        }
+
+        // 关闭文章模态框
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelArticleBtn = document.getElementById('cancelArticleBtn');
+        
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', function() {
+                document.getElementById('articleModal').classList.add('hidden');
+            });
+        }
+        
+        if (cancelArticleBtn) {
+            cancelArticleBtn.addEventListener('click', function() {
+                document.getElementById('articleModal').classList.add('hidden');
+            });
+        }
+
+        // 文章表单提交
+        const articleForm = document.getElementById('articleForm');
+        if (articleForm) {
+            articleForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 saveArticle();
             });
+        }
 
-            // 上传区域点击事件
-            document.getElementById('uploadArea').addEventListener('click', function() {
-                document.getElementById('fileInput').click();
+        // 保存草稿
+        const saveDraftBtn = document.getElementById('saveDraftBtn');
+        if (saveDraftBtn) {
+            saveDraftBtn.addEventListener('click', function() {
+                saveArticle(true);
+            });
+        }
+
+        // 上传图片按钮
+        const uploadMediaBtn = document.getElementById('uploadMediaBtn');
+        if (uploadMediaBtn) {
+            uploadMediaBtn.addEventListener('click', function() {
+                document.getElementById('uploadModal').classList.remove('hidden');
+            });
+        }
+
+        // 关闭上传模态框
+        const closeUploadBtn = document.getElementById('closeUploadBtn');
+        const cancelUploadBtn = document.getElementById('cancelUploadBtn');
+        
+        if (closeUploadBtn) {
+            closeUploadBtn.addEventListener('click', function() {
+                document.getElementById('uploadModal').classList.add('hidden');
+            });
+        }
+        
+        if (cancelUploadBtn) {
+            cancelUploadBtn.addEventListener('click', function() {
+                document.getElementById('uploadModal').classList.add('hidden');
+            });
+        }
+
+        // 上传区域
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        
+        if (uploadArea && fileInput) {
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
             });
 
-            // 文件选择事件
-            document.getElementById('fileInput').addEventListener('change', function(e) {
+            fileInput.addEventListener('change', function(e) {
                 handleFileSelect(e);
             });
 
             // 拖拽上传
-            const uploadArea = document.getElementById('uploadArea');
             uploadArea.addEventListener('dragover', function(e) {
                 e.preventDefault();
                 uploadArea.classList.add('border-primary', 'bg-primary/5');
@@ -350,355 +869,452 @@
                 uploadArea.classList.remove('border-primary', 'bg-primary/5');
                 handleFileSelect(e);
             });
-
-            // 初始化仪表盘
-            updateDashboard();
-            updateArticleList();
-            updateMediaList();
         }
 
-        // 更新仪表盘
-        function updateDashboard() {
-            // 更新文章数量
-            document.getElementById('articleCount').textContent = articles.length;
-            
-            // 更新媒体数量
-            document.getElementById('mediaCount').textContent = media.length;
-            
-            // 更新最近文章
-            updateRecentArticles();
+        // 确认上传
+        const confirmUploadBtn = document.getElementById('confirmUploadBtn');
+        if (confirmUploadBtn) {
+            confirmUploadBtn.addEventListener('click', function() {
+                uploadImage();
+            });
         }
 
-        // 更新最近文章列表
-        function updateRecentArticles() {
-            const recentArticlesContainer = document.getElementById('recentArticles');
-            const recentArticles = articles.slice(-5).reverse();
-            
-            if (recentArticles.length === 0) {
-                recentArticlesContainer.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                            还没有任何文章
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            recentArticlesContainer.innerHTML = recentArticles.map(article => `
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${article.title}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(article.date).toLocaleDateString()}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已发布</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <button onclick="editArticle('${article.id}')" class="text-primary hover:text-primary/80 mr-3">编辑</button>
-                        <button onclick="deleteArticle('${article.id}')" class="text-accent hover:text-accent/80">删除</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // 更新文章列表
-        function updateArticleList() {
-            const articleListContainer = document.getElementById('articleList');
-            
-            if (articles.length === 0) {
-                articleListContainer.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                            还没有任何文章
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            articleListContainer.innerHTML = articles.map(article => `
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${article.title}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${article.category || '未分类'}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(article.date).toLocaleDateString()}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已发布</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <button onclick="editArticle('${article.id}')" class="text-primary hover:text-primary/80 mr-3">编辑</button>
-                        <button onclick="deleteArticle('${article.id}')" class="text-accent hover:text-accent/80">删除</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // 更新媒体列表
-        function updateMediaList() {
-            const mediaListContainer = document.getElementById('mediaList');
-            
-            if (media.length === 0) {
-                mediaListContainer.innerHTML = `
-                    <div class="col-span-full text-center text-gray-500 py-12">
-                        还没有任何媒体文件
-                    </div>
-                `;
-                return;
-            }
-            
-            mediaListContainer.innerHTML = media.map(item => `
-                <div class="border rounded-lg p-2 hover:shadow-md transition-shadow relative">
-                    <img src="${item.url}" alt="${item.name}" class="w-full h-24 object-cover rounded">
-                    <p class="text-xs text-gray-600 mt-1 truncate">${item.name}</p>
-                    <button onclick="deleteMedia('${item.id}')" class="absolute top-1 right-1 bg-accent text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-accent/90">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        // 显示新建文章模态框
-        function showAddArticleModal() {
-            document.getElementById('addArticleModal').classList.remove('hidden');
-            document.getElementById('articleTitle').value = '';
-            document.getElementById('articleCategory').value = '';
-            document.getElementById('articleContent').value = '';
-        }
-
-        // 关闭新建文章模态框
-        function closeAddArticleModal() {
-            document.getElementById('addArticleModal').classList.add('hidden');
-        }
-
-        // 保存文章
-        function saveArticle() {
-            const title = document.getElementById('articleTitle').value;
-            const category = document.getElementById('articleCategory').value;
-            const content = document.getElementById('articleContent').value;
-            
-            const newArticle = {
-                id: Date.now().toString(),
-                title,
-                category,
-                content,
-                date: new Date().toISOString()
-            };
-            
-            articles.push(newArticle);
-            localStorage.setItem('articles', JSON.stringify(articles));
-            
-            closeAddArticleModal();
-            updateArticleList();
-            updateDashboard();
-            
-            // 显示成功提示
-            showNotification('文章发布成功！', 'success');
-        }
-
-        // 编辑文章
-        function editArticle(id) {
-            const article = articles.find(a => a.id === id);
-            if (!article) return;
-            
-            document.getElementById('articleTitle').value = article.title;
-            document.getElementById('articleCategory').value = article.category;
-            document.getElementById('articleContent').value = article.content;
-            
-            // 切换到编辑模式
-            const form = document.getElementById('addArticleForm');
-            form.onsubmit = function(e) {
+        // 设置表单提交
+        const settingsForm = document.getElementById('settingsForm');
+        if (settingsForm) {
+            settingsForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                updateArticle(id);
-            };
-            
-            document.getElementById('addArticleModal').classList.remove('hidden');
+                saveSettings();
+            });
         }
 
-        // 更新文章
-        function updateArticle(id) {
-            const title = document.getElementById('articleTitle').value;
-            const category = document.getElementById('articleCategory').value;
-            const content = document.getElementById('articleContent').value;
+        // 退出登录
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function() {
+                document.getElementById('mainApp').classList.add('hidden');
+                document.getElementById('loginPage').classList.remove('hidden');
+                showNotification('已退出登录', 'info');
+            });
+        }
+
+        // 初始化仪表盘
+        updateDashboard();
+        updateArticleList();
+        updateMediaList();
+        loadSettings();
+    }
+
+    // 更新仪表盘
+    function updateDashboard() {
+        // 更新文章数量
+        document.getElementById('totalArticles').textContent = articles.length;
+        document.getElementById('totalMedia').textContent = media.length;
+        
+        // 更新最近文章
+        updateRecentArticles();
+    }
+
+    // 更新最近文章
+    function updateRecentArticles() {
+        const recentArticlesTable = document.getElementById('recentArticlesTable');
+        const recentArticles = articles.slice(-5).reverse();
+        
+        if (recentArticles.length === 0) {
+            recentArticlesTable.innerHTML = `
+                <tr>
+                    <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                        <i class="fa fa-file-text text-4xl mb-3"></i>
+                        <p>还没有任何文章</p>
+                        <p class="text-sm mt-1">点击右上角的"新建文章"按钮开始创作</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        recentArticlesTable.innerHTML = recentArticles.map(article => `
+            <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${article.title}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(article.date).toLocaleDateString()}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已发布</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <button onclick="editArticle('${article.id}')" class="text-primary hover:text-primary/80 mr-3">编辑</button>
+                    <button onclick="deleteArticle('${article.id}')" class="text-accent hover:text-accent/80">删除</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // 更新文章列表
+    function updateArticleList() {
+        const articlesTable = document.getElementById('articlesTable');
+        const articlesCount = document.getElementById('articlesCount');
+        
+        articlesCount.textContent = articles.length;
+        
+        if (articles.length === 0) {
+            articlesTable.innerHTML = `
+                <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                        <i class="fa fa-file-text text-4xl mb-3"></i>
+                        <p>还没有任何文章</p>
+                        <p class="text-sm mt-1">点击右上角的"新建文章"按钮开始创作</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        articlesTable.innerHTML = articles.map(article => `
+            <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${article.title}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${article.category || '未分类'}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(article.date).toLocaleDateString()}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已发布</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <button onclick="editArticle('${article.id}')" class="text-primary hover:text-primary/80 mr-3">编辑</button>
+                    <button onclick="deleteArticle('${article.id}')" class="text-accent hover:text-accent/80">删除</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // 更新媒体列表
+    function updateMediaList() {
+        const mediaGrid = document.getElementById('mediaGrid');
+        
+        if (media.length === 0) {
+            mediaGrid.innerHTML = `
+                <div class="col-span-full text-center text-gray-500 py-12">
+                    <i class="fa fa-image text-4xl mb-3"></i>
+                    <p>还没有任何媒体文件</p>
+                    <p class="text-sm mt-1">点击右上角的"上传图片"按钮开始上传</p>
+                </div>
+            `;
+            return;
+        }
+        
+        mediaGrid.innerHTML = media.map(item => `
+            <div class="border rounded-lg p-2 hover:shadow-md transition-shadow relative group">
+                <img src="${item.url}" alt="${item.name}" class="w-full h-24 object-cover rounded">
+                <p class="text-xs text-gray-600 mt-1 truncate">${item.name}</p>
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                    <div class="flex space-x-2">
+                        <button onclick="viewMedia('${item.id}')" class="bg-white text-gray-900 px-2 py-1 rounded text-xs hover:bg-gray-100 transition-colors">
+                            <i class="fa fa-eye mr-1"></i>查看
+                        </button>
+                        <button onclick="deleteMedia('${item.id}')" class="bg-accent text-white px-2 py-1 rounded text-xs hover:bg-accent/90 transition-colors">
+                            <i class="fa fa-trash mr-1"></i>删除
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // 保存文章
+    function saveArticle(isDraft = false) {
+        const title = document.getElementById('articleTitle').value;
+        const category = document.getElementById('articleCategory').value;
+        const tags = document.getElementById('articleTags').value;
+        const content = document.getElementById('articleContent').value;
+        
+        if (!title.trim()) {
+            showNotification('请输入文章标题', 'error');
+            return;
+        }
+        
+        if (!content.trim()) {
+            showNotification('请输入文章内容', 'error');
+            return;
+        }
+        
+        const newArticle = {
+            id: Date.now().toString(),
+            title,
+            category,
+            tags: tags.split(',').map(tag => tag.trim()),
+            content,
+            date: new Date().toISOString(),
+            status: isDraft ? 'draft' : 'published'
+        };
+        
+        articles.push(newArticle);
+        localStorage.setItem('articles', JSON.stringify(articles));
+        
+        document.getElementById('articleModal').classList.add('hidden');
+        updateArticleList();
+        updateDashboard();
+        
+        showNotification(isDraft ? '草稿保存成功' : '文章发布成功', 'success');
+    }
+
+    // 编辑文章
+    function editArticle(id) {
+        const article = articles.find(a => a.id === id);
+        if (!article) return;
+        
+        document.getElementById('articleTitle').value = article.title;
+        document.getElementById('articleCategory').value = article.category || '';
+        document.getElementById('articleTags').value = article.tags.join(', ');
+        document.getElementById('articleContent').value = article.content;
+        
+        document.getElementById('modalTitle').textContent = '编辑文章';
+        document.getElementById('articleModal').classList.remove('hidden');
+        
+        // 保存编辑
+        const form = document.getElementById('articleForm');
+        const originalSubmit = form.onsubmit;
+        
+        form.onsubmit = function(e) {
+            e.preventDefault();
+            
+            const updatedArticle = {
+                ...article,
+                title: document.getElementById('articleTitle').value,
+                category: document.getElementById('articleCategory').value,
+                tags: document.getElementById('articleTags').value.split(',').map(tag => tag.trim()),
+                content: document.getElementById('articleContent').value
+            };
             
             const index = articles.findIndex(a => a.id === id);
-            if (index === -1) return;
-            
-            articles[index] = {
-                ...articles[index],
-                title,
-                category,
-                content
-            };
-            
-            localStorage.setItem('articles', JSON.stringify(articles));
-            
-            closeAddArticleModal();
-            updateArticleList();
-            updateDashboard();
-            
-            // 恢复表单提交事件
-            document.getElementById('addArticleForm').onsubmit = function(e) {
-                e.preventDefault();
-                saveArticle();
-            };
-            
-            // 显示成功提示
-            showNotification('文章更新成功！', 'success');
-        }
-
-        // 删除文章
-        function deleteArticle(id) {
-            if (confirm('确定要删除这篇文章吗？')) {
-                articles = articles.filter(a => a.id !== id);
+            if (index !== -1) {
+                articles[index] = updatedArticle;
                 localStorage.setItem('articles', JSON.stringify(articles));
                 
+                document.getElementById('articleModal').classList.add('hidden');
                 updateArticleList();
                 updateDashboard();
                 
-                // 显示成功提示
-                showNotification('文章删除成功！', 'success');
+                showNotification('文章更新成功', 'success');
             }
-        }
+            
+            // 恢复原有的提交事件
+            form.onsubmit = originalSubmit;
+        };
+    }
 
-        // 显示上传模态框
-        function showUploadModal() {
-            document.getElementById('uploadModal').classList.remove('hidden');
+    // 删除文章
+    function deleteArticle(id) {
+        if (confirm('确定要删除这篇文章吗？')) {
+            articles = articles.filter(a => a.id !== id);
+            localStorage.setItem('articles', JSON.stringify(articles));
+            
+            updateArticleList();
+            updateDashboard();
+            
+            showNotification('文章删除成功', 'success');
         }
+    }
 
-        // 关闭上传模态框
-        function closeUploadModal() {
+    // 处理文件选择
+    function handleFileSelect(e) {
+        const files = e.target.files || e.dataTransfer.files;
+        if (files.length === 0) return;
+        
+        const file = files[0];
+        if (!file.type.startsWith('image/')) {
+            showNotification('请上传图片文件', 'error');
+            return;
+        }
+        
+        if (file.size > 10 * 1024 * 1024) {
+            showNotification('图片大小不能超过10MB', 'error');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const newMedia = {
+                id: Date.now().toString(),
+                name: file.name,
+                url: e.target.result,
+                size: file.size,
+                type: file.type,
+                uploadDate: new Date().toISOString()
+            };
+            
+            media.push(newMedia);
+            localStorage.setItem('media', JSON.stringify(media));
+            
             document.getElementById('uploadModal').classList.add('hidden');
-            document.getElementById('fileInput').value = '';
-        }
-
-        // 处理文件选择
-        function handleFileSelect(e) {
-            const files = e.target.files || e.dataTransfer.files;
-            if (files.length === 0) return;
+            updateMediaList();
             
-            const file = files[0];
-            if (!file.type.startsWith('image/')) {
-                showNotification('请上传图片文件！', 'error');
-                return;
-            }
+            showNotification('图片上传成功', 'success');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // 上传图片
+    function uploadImage() {
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput.files.length === 0) {
+            showNotification('请先选择图片文件', 'error');
+            return;
+        }
+        
+        handleFileSelect({ target: fileInput });
+    }
+
+    // 查看媒体文件
+    function viewMedia(id) {
+        const mediaItem = media.find(m => m.id === id);
+        if (!mediaItem) return;
+        
+        // 这里可以实现查看大图的功能
+        showNotification(`查看图片: ${mediaItem.name}`, 'info');
+    }
+
+    // 删除媒体文件
+    function deleteMedia(id) {
+        if (confirm('确定要删除这个图片吗？')) {
+            media = media.filter(m => m.id !== id);
+            localStorage.setItem('media', JSON.stringify(media));
             
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const newMedia = {
-                    id: Date.now().toString(),
-                    name: file.name,
-                    url: e.target.result,
-                    size: file.size,
-                    type: file.type
-                };
-                
-                media.push(newMedia);
-                localStorage.setItem('media', JSON.stringify(media));
-                
-                closeUploadModal();
-                updateMediaList();
-                
-                // 显示成功提示
-                showNotification('图片上传成功！', 'success');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // 上传图片
-        function uploadImage() {
-            const fileInput = document.getElementById('fileInput');
-            if (fileInput.files.length === 0) {
-                showNotification('请先选择图片文件！', 'error');
-                return;
-            }
+            updateMediaList();
             
-            handleFileSelect({ target: fileInput });
+            showNotification('图片删除成功', 'success');
         }
+    }
 
-        // 删除媒体文件
-        function deleteMedia(id) {
-            if (confirm('确定要删除这个图片吗？')) {
-                media = media.filter(m => m.id !== id);
-                localStorage.setItem('media', JSON.stringify(media));
-                
-                updateMediaList();
-                
-                // 显示成功提示
-                showNotification('图片删除成功！', 'success');
-            }
+    // 重置文章表单
+    function resetArticleForm() {
+        document.getElementById('articleTitle').value = '';
+        document.getElementById('articleCategory').value = '';
+        document.getElementById('articleTags').value = '';
+        document.getElementById('articleContent').value = '';
+        
+        // 恢复原有的提交事件
+        const form = document.getElementById('articleForm');
+        form.onsubmit = function(e) {
+            e.preventDefault();
+            saveArticle();
+        };
+    }
+
+    // 加载设置
+    function loadSettings() {
+        document.getElementById('siteTitle').value = settings.siteTitle || '我的个人博客';
+        document.getElementById('siteDomain').value = settings.siteDomain || 'amzian.com';
+        document.getElementById('siteDescription').value = settings.siteDescription || '这是我的个人博客，分享技术文章和生活感悟';
+        document.getElementById('siteLanguage').value = settings.siteLanguage || 'zh-CN';
+        document.getElementById('siteTimezone').value = settings.siteTimezone || 'Asia/Shanghai';
+    }
+
+    // 保存设置
+    function saveSettings() {
+        settings = {
+            siteTitle: document.getElementById('siteTitle').value,
+            siteDomain: document.getElementById('siteDomain').value,
+            siteDescription: document.getElementById('siteDescription').value,
+            siteLanguage: document.getElementById('siteLanguage').value,
+            siteTimezone: document.getElementById('siteTimezone').value
+        };
+        
+        localStorage.setItem('settings', JSON.stringify(settings));
+        
+        showNotification('设置保存成功', 'success');
+    }
+
+    // 显示通知
+    function showNotification(message, type = 'info') {
+        const notification = document.getElementById('notification');
+        const notificationIcon = document.getElementById('notificationIcon');
+        const notificationTitle = document.getElementById('notificationTitle');
+        const notificationMessage = document.getElementById('notificationMessage');
+        
+        // 设置通知类型
+        if (type === 'success') {
+            notificationIcon.className = 'w-8 h-8 rounded-full bg-green-500 flex items-center justify-center mr-3';
+            notificationTitle.textContent = '操作成功';
+        } else if (type === 'error') {
+            notificationIcon.className = 'w-8 h-8 rounded-full bg-red-500 flex items-center justify-center mr-3';
+            notificationTitle.textContent = '操作失败';
+        } else if (type === 'warning') {
+            notificationIcon.className = 'w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center mr-3';
+            notificationTitle.textContent = '警告';
+        } else {
+            notificationIcon.className = 'w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mr-3';
+            notificationTitle.textContent = '提示';
         }
-
-        // 加载设置
-        function loadSettings() {
-            document.getElementById('siteTitle').value = settings.siteTitle || '我的个人网站';
-            document.getElementById('siteDescription').value = settings.siteDescription || '这是我的个人网站';
-        }
-
-        // 保存设置
-        function saveSettings() {
-            settings = {
-                siteTitle: document.getElementById('siteTitle').value,
-                siteDescription: document.getElementById('siteDescription').value,
-                siteDomain: document.getElementById('siteDomain').value
-            };
-            
-            localStorage.setItem('settings', JSON.stringify(settings));
-            
-            // 显示成功提示
-            showNotification('设置保存成功！', 'success');
-        }
-
+        
+        notificationMessage.textContent = message;
+        
         // 显示通知
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-20 right-6 z-50 px-6 py-3 rounded-lg shadow-lg text-white ${
-                type === 'success' ? 'bg-green-500' : 
-                type === 'error' ? 'bg-red-500' : 
-                'bg-blue-500'
-            }`;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateX(100%)';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }
+        notification.classList.remove('hidden');
+        
+        // 3秒后隐藏通知
+        setTimeout(() => {
+            notification.classList.add('hidden');
+        }, 3000);
+    }
 
-        // 添加样式
-        const style = document.createElement('style');
-        style.textContent = `
-            .sidebar-active {
-                @apply bg-primary/10 text-primary border-l-4 border-primary;
+    // 添加样式
+    const style = document.createElement('style');
+    style.textContent = `
+        .nav-link.active {
+            @apply bg-primary/5 text-primary border-l-4 border-primary;
+        }
+        
+        /* 响应式侧边栏 */
+        @media (max-width: 768px) {
+            #sidebar {
+                transform: translateX(-100%);
             }
-            
-            .content-section {
-                transition: all 0.3s ease;
+            #sidebar.-translate-x-full {
+                transform: translateX(0);
             }
-            
-            /* 模态框动画 */
-            #addArticleModal, #uploadModal {
-                transition: opacity 0.3s ease;
+            #content {
+                margin-left: 0 !important;
             }
-            
-            #addArticleModal.hidden, #uploadModal.hidden {
-                opacity: 0;
-                pointer-events: none;
-            }
-            
-            #addArticleModal:not(.hidden), #uploadModal:not(.hidden) {
-                opacity: 1;
-                pointer-events: auto;
-            }
-            
-            /* 平滑滚动 */
-            html {
-                scroll-behavior: smooth;
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
+        }
+        
+        /* 动画效果 */
+        .content-section {
+            transition: all 0.3s ease;
+        }
+        
+        /* 模态框动画 */
+        #articleModal, #uploadModal {
+            transition: opacity 0.3s ease;
+        }
+        
+        #articleModal.hidden, #uploadModal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        #articleModal:not(.hidden), #uploadModal:not(.hidden) {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 表格悬停效果 */
+        tr:hover {
+            @apply bg-gray-50;
+        }
+        
+        /* 按钮悬停效果 */
+        button {
+            @apply transition-all duration-200;
+        }
+        
+        /* 输入框焦点效果 */
+        input:focus, textarea:focus, select:focus {
+            @apply ring-2 ring-primary/50 border-primary;
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 </body>
 </html>
